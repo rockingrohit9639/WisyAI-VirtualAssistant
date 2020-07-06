@@ -1,3 +1,9 @@
+"""
+WisyAI - Virtual Assistant
+Author - Rohit Saini
+Purpose - To Increase my experience
+"""
+
 import pyttsx3
 import datetime
 import speech_recognition as sr
