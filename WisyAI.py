@@ -18,7 +18,7 @@ from passwordGenerator import password_gen
 import pyperclip as pc
 import time
 
-url = "http://api.openweathermap.org/data/2.5/weather?appid=e7ab056bcf4fa908ed098789e9ee78d7&q=khurja"
+url = "http://api.openweathermap.org/data/2.5/weather?appid={your-api-id}&q={your-city}"
 response = requests.get(url)
 whether = response.json()
 
