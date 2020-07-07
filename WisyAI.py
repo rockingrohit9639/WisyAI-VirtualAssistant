@@ -11,6 +11,16 @@ import wikipedia
 import webbrowser
 import os
 import smtplib
+import json
+import requests
+from newspaperReader import read_news
+from passwordGenerator import password_gen
+import pyperclip as pc
+import time
+
+url = "http://api.openweathermap.org/data/2.5/weather?appid=e7ab056bcf4fa908ed098789e9ee78d7&q=khurja"
+response = requests.get(url)
+whether = response.json()
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -40,6 +50,7 @@ def wish_me():
         speak("Good afternoon Dear")
     else:
         speak("good evening dear")
+
     speak("I am Wisy how may i help you sir")
 
 def take_command():
@@ -51,7 +62,6 @@ def take_command():
     with sr.Microphone() as source:
         print("Listening...")
         r.pause_threshold = 1
-        r.energy_threshold = 350
         audio = r.listen(source)
     try:
         print("Recognizing...")
@@ -64,6 +74,12 @@ def take_command():
     return query
 
 def sendEmail(to, content):
+    '''
+    Function to send email to someone
+    :param to:
+    :param content:
+    :return: none
+    '''
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.ehlo()
     server.starttls()
@@ -71,22 +87,43 @@ def sendEmail(to, content):
     server.sendmail("rohitbhatwara1@gmail.com", to, content)
     server.close()
 
+def weather():
+    '''
+    Function to forecast the weather
+    :return: none
+    '''
+    curr_temp = whether["main"]["temp"]
+    city = whether["name"]
+    desc = whether["weather"]
+    speak("okay")
+    speak("The time is" + str(datetime.datetime.now().strftime("%H%M")))
+    speak("Current Temperature" + "in" + city  + "is" + str(curr_temp) + "degree kelvin")
+    speak("Today there will be " + desc[0]['description'] + "in your city")
+    speak("Have a good day")
+    speak("Todays news headlines are")
+    read_news()
+
+
 if __name__ == '__main__':
-     # wish_me()
-     while 1:
+    # Logics for tasks
+    wish_me()
+    # weather()
+    while 1:
         query = take_command().lower()
-     #Logics for tasks
         if 'wikipedia' in query:
-            speak("searching wikipedia")
-            query = query.replace("wikipedia", "")
-            result = wikipedia.summary(query, sentences=2)
-            speak("According to wikipedia")
-            print(result)
-            speak(result)
+            try:
+                speak("searching wikipedia")
+                query = query.replace("wikipedia", "")
+                result = wikipedia.summary(query, sentences=2)
+                speak("According to wikipedia")
+                print(result)
+                speak(result)
+            except Exception as e:
+                speak("Sorry sir i could not search this try another things")
         elif 'youtube' in query:
             speak("opening youtube")
             webbrowser.open("youtube.com")
-        elif 'google' in query:
+        elif 'open google' in query:
             speak("opening google")
             webbrowser.open("google.com")
         elif 'play music' in query:
@@ -112,8 +149,31 @@ if __name__ == '__main__':
             except Exception as e:
                 print(e)
                 speak("Sorry sir i could not send your email at the moment")
-        else:
-            webbrowser.open(query)
+        elif 'how are you' in query:
+            speak("I am good well thanks and how about you")
+        elif 'i am good' in query:
+            speak("Okay... How may i help you")
+        elif 'generate password' in query:
+            speak("yes why not. Please enter the length of password")
+            password = password_gen()
+            speak("Here is your well secured password. It is also copied to your clipboard you can paste it anywhere")
+            print(f"Your Password : {password}")
+            pc.copy(password)
+        elif 'news headline' in query:
+            speak("Here are some latest news headlines from India")
+            read_news()
+        elif 'who are you' in query:
+            speak("Hey I am Wisy. I am A I model designed by Rohit saini. And I am under development.")
+        elif 'what can you do' in query:
+            speak("Well I am under development but you can try these listed commands")
+            print("1. Wikipedia anything\n2. Open YouTube\n3. Open Google\n4. Play Music\n5. Open code editor\n6. Generate a password\n7.Send Email\n7. Read News Healines for today")
+            time.sleep(4)
+            speak("so what can i do for you")
+        elif 'exit' in query:
+            speak("Exiting the program hope you liked me")
+            exit(0)
+
+
 
 
 
