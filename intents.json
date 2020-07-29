@@ -1,0 +1,76 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": [
+        "Hi",
+        "Hey",
+        "How are you",
+        "Is anyone there?",
+        "Hello",
+        "Good day"
+      ],
+      "responses": [
+        "Hey :-)",
+        "Hello, thanks for visiting",
+        "Hi there, what can I do for you?",
+        "Hi there, how can I help?"
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["Bye", "See you later", "Goodbye"],
+      "responses": [
+        "See you later, thanks for visiting",
+        "Have a nice day",
+        "Bye! Come back again soon."
+      ]
+    },
+    {
+      "tag": "thanks",
+      "patterns": ["Thanks", "Thank you", "That's helpful", "Thank's a lot!"],
+      "responses": ["Happy to help!", "Any time!", "My pleasure"]
+    },
+    {
+      "tag": "items",
+      "patterns": ["What can you do?", "What is your job?"],
+      "responses": [
+        "You can try saying Open Google",
+        "You can try saying Open browser", 
+        "You can try saying Play music", 
+        "You can try saying Open code editor", 
+        "You can try saying wikipedia something",
+        "You can try saying Open youtube",  
+        "You can try saying generate password", 
+        "You can try saying send email", 
+        "You can try saying read news for me"
+      ]
+    },
+    {
+      "tag": "funny",
+      "patterns": [
+        "Tell me a joke!",
+        "Tell me something funny!",
+        "Do you know a joke?"
+      ],
+      "responses": [
+        "Why did the hipster burn his mouth? He drank the coffee before it was cool.",
+        "What did the buffalo say when his son left for college? Bison."
+      ]
+    },
+    {
+      "tag": "about me",
+      "patterns": [
+        "who are you?",
+        "who created you",
+        "are you a human",
+        "who is you father",
+        "what is your father name"
+      ],
+      "responses": [
+        "My name is Wisy. I am created by Rohit Saini but I am under deverlopment.",
+        "I am Wisy a virtual assistant for helping you. I am created by Rohit Sani."
+      ]
+    }
+  ]
+}

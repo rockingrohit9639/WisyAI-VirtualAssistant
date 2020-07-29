@@ -17,6 +17,7 @@ from newspaperReader import read_news
 from passwordGenerator import password_gen
 import pyperclip as pc
 import time
+from nnAndmodel import *
 
 url = "http://api.openweathermap.org/data/2.5/weather?appid=e7ab056bcf4fa908ed098789e9ee78d7&q=khurja"
 response = requests.get(url)
@@ -51,7 +52,7 @@ def wish_me():
     else:
         speak("good evening dear")
 
-    speak("I am Wisy how may i help you sir")
+    # speak("I am Wisy how may i help you sir")
 
 def take_command():
     '''
@@ -97,11 +98,11 @@ def weather():
     desc = whether["weather"]
     speak("okay")
     speak("The time is" + str(datetime.datetime.now().strftime("%H%M")))
-    speak("Current Temperature" + "in" + city  + "is" + str(curr_temp) + "degree kelvin")
+    speak("Current Temperature" + "in" + city + "is" + str(curr_temp) + "degree kelvin")
     speak("Today there will be " + desc[0]['description'] + "in your city")
     speak("Have a good day")
     speak("Todays news headlines are")
-    read_news()
+    # read_news()
 
 
 if __name__ == '__main__':
@@ -149,29 +150,35 @@ if __name__ == '__main__':
             except Exception as e:
                 print(e)
                 speak("Sorry sir i could not send your email at the moment")
-        elif 'how are you' in query:
-            speak("I am good well thanks and how about you")
-        elif 'i am good' in query:
-            speak("Okay... How may i help you")
         elif 'generate password' in query:
             speak("yes why not. Please enter the length of password")
             password = password_gen()
             speak("Here is your well secured password. It is also copied to your clipboard you can paste it anywhere")
             print(f"Your Password : {password}")
             pc.copy(password)
-        elif 'news headline' in query:
+        elif 'news' in query:
             speak("Here are some latest news headlines from India")
             read_news()
-        elif 'who are you' in query:
-            speak("Hey I am Wisy. I am A I model designed by Rohit saini. And I am under development.")
-        elif 'what can you do' in query:
-            speak("Well I am under development but you can try these listed commands")
-            print("1. Wikipedia anything\n2. Open YouTube\n3. Open Google\n4. Play Music\n5. Open code editor\n6. Generate a password\n7.Send Email\n7. Read News Healines for today")
-            time.sleep(4)
-            speak("so what can i do for you")
         elif 'exit' in query:
             speak("Exiting the program hope you liked me")
             exit(0)
+        else:
+            data = torch.load(FILE)
+            query = tokenize(query)
+            x = bag_of_words(query, all_words)
+            x = x.reshape(1, x.shape[0])
+            x = torch.from_numpy(x)
+            op = model(x)
+            _, predicted = torch.max(op, dim=1)
+            tg = tags[predicted.item()]
+
+            # probs = torch.softmax(outputs, dim=1)
+            # prob = probs[0][predicted.item()]
+
+            # if prob.item() > 0.75:
+            for intent in intents['intents']:
+                if tg == intent['tag']:
+                    speak(random.choice(intent['responses']))
 
 
 

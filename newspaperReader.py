@@ -14,5 +14,5 @@ def read_news():
     response = requests.get(url)
     text = response.text
     json_data = json.loads(text)
-    for data in range(0, 11):
+    for data in range(0, 2):
         read_headlines(json_data['articles'][data]['title'])
